@@ -1,8 +1,10 @@
 'use client';
 
-
 import React, { useState } from "react";
 import { Input } from "@/components/ui/input";
+import { Controller, useForm } from "react-hook-form";
+import Link from "next/link";
+
 import {
   Select,
   SelectContent,
@@ -30,19 +32,13 @@ interface RegistrationFormData {
   password: string;
   confirmPassword: string;
   role: 'applicant' | 'employer'
-
-
-
 }
 
 
 
 
-const Registration = async () => {
-
-
-
-  const [formdata, setFormdata] = useState<RegistrationFormData>({
+const Registration = () => {
+  const [formData, setFormdata] = useState<RegistrationFormData>({
     name: "",
     userName: "",
     email: "",
@@ -56,8 +52,10 @@ const Registration = async () => {
     { label: "Dark", value: "dark" },
     { label: "System", value: "system" },
   ]
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-
+  const handleInputChange = (name : string ,value : string) => {}
     return (
     <div className="min-h-screen bg-background flex items-center justify-center p-4">
       <Card className="w-full max-w-md">
@@ -121,21 +119,19 @@ const Registration = async () => {
             {/* Role Selection */}
             <div className="space-y-2 w-full">
               <Label htmlFor="role">I am a *</Label>
-              <Controller
-                name="role"
-                control={control}
-                render={({ field }) => (
-                  <Select value={field.value} onValueChange={field.onChange}>
-                    <SelectTrigger className="w-full">
-                      <SelectValue placeholder="Select your role" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="applicant">Job Applicant</SelectItem>
-                      <SelectItem value="employer">Employer</SelectItem>
-                    </SelectContent>
-                  </Select>
-                )}
-              ></Controller>
+              <Select value={formData.role} 
+              onValueChange={(value : "applicant" | "employer") => {
+                handleInputChange("role",value)
+              }}
+              >
+                  <SelectTrigger className="w-[180px]">
+                    <SelectValue placeholder="Select Your Role" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="applicant">Job applicant</SelectItem>
+                    <SelectItem value="employer">Emplyer</SelectItem>
+                  </SelectContent>
+                </Select>
             </div>
 
             {/* Password Field */}
@@ -148,7 +144,7 @@ const Registration = async () => {
                   type={showPassword ? "text" : "password"}
                   placeholder="Create a strong password"
                   required
-                  {...register("password")}
+                  // {...register("password")}
                   className={`pl-10 pr-10 `}
                 />
 
@@ -178,7 +174,7 @@ const Registration = async () => {
                   type={showConfirmPassword ? "text" : "password"}
                   placeholder="Confirm your password"
                   required
-                  {...register("confirmPassword")}
+                  // {...register("confirmPassword")}
                   className={`pl-10 pr-10 `}
                 />
                 <Button
@@ -219,9 +215,4 @@ const Registration = async () => {
     </div>
   );
 };
-
-
-
-};
-
 export default Registration;
